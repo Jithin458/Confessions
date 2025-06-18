@@ -14,4 +14,4 @@ next()
     res.status(403).json(err)
 }}
 
-module.exports = verifyToken();
+module.exports = verifyToken;
