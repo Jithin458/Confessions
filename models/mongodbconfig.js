@@ -30,7 +30,7 @@ const confSchema = new mongoose.Schema({
   }
 })
 const Host = mongoose.model("hosts",hostSchema)
-const Conf = mongoose.model("users",confSchema)
+const Conf = mongoose.model("confessions",confSchema)
 const User = mongoose.model("users",userSchema)
 
 module.exports= {Host,Conf,User};

@@ -14,7 +14,7 @@ userRouter.use(userLimiter);
 
 userRouter.post("/post-confession",async(req,res)=>{
     const hostEmail = req.body.email;
-    const exist = Host.findOne({host:hostEmail})
+    const exist = await Host.findOne({host:hostEmail})
     if(!exist){
         res.status(404).json({ msg: "Host doesnt exist" });
     }else{
