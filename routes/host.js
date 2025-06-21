@@ -3,8 +3,14 @@ const mongoose = require("mongoose");
 const hostRouter = express.Router();
 const {Host,Conf,User}= require("../models/mongodbconfig.js")
 const verifyToken = require("../middlewares/auth.js");
+const rateLimit = require("express-rate-limit");
 const jwtPassword ="";
 
+const hostLimiter = rateLimit({
+  windowMs:10*60*1000,
+  limit:40
+})
+hostRouter.use(hostLimiter);
 
 hostRouter.post("/new-user",async(req,res)=>{
  const email = req.body.email;

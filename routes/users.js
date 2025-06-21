@@ -2,7 +2,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userRouter = express.Router();
 const {Host,Conf}= require("../models/mongodbconfig.js")
+const rateLimit = require("express-rate-limit");
 
+
+const userLimiter = rateLimit({
+  windowMs:10*60*1000,
+  limit:13
+})
+userRouter.use(userLimiter);
 
 
 userRouter.post("/post-confession",async(req,res)=>{
