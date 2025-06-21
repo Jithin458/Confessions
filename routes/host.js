@@ -40,7 +40,7 @@ hostRouter.get("/get-confessions",verifyToken,async(req,res)=>{
       res.json({confessions})
     }});
 
-hostRouter.post("/post-confession",verifyToken,async(req,res)=>{
+hostRouter.post("/init",verifyToken,async(req,res)=>{
     const hostEmail = req.hostEmail;
     const exist = await Host.findOne({host:hostEmail})
     if(exist){
