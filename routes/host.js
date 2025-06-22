@@ -32,15 +32,17 @@ res.json({token});
 
 hostRouter.get("/get-confessions",verifyToken,async(req,res)=>{
     const hostEmail = req.hostEmail;
-    const exist = await User.findOne({host:hostEmail})
-    if(!exist){
-        res.status(404).json({ msg: "Host doesnt exist" });
-    }if(exist.isHosting==true){
+    const user = await User.findOne({host:hostEmail})
+    const isHosted = user.isHosted;
+    if(isHosted!=true){
+        res.status(404).json({ msg: "confession doesnt exist" });
+    }else{
       const confessions = await Conf.find({host:hostEmail}).select("confession")
       res.json({confessions})
     }});
 
 hostRouter.post("/init",verifyToken,async(req,res)=>{
+  try{
     const hostEmail = req.hostEmail;
     const user = await User.findOne({host:hostEmail})
     const isHosted = user.isHosted;
@@ -50,6 +52,10 @@ hostRouter.post("/init",verifyToken,async(req,res)=>{
      user.isHosted = true;
       await user.save();
       res.status(201).json({ msg: "Created" });
+    }}
+    catch(err){
+      console.log(err);
+      res.json({err});
     }
     
 

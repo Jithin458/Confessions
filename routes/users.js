@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const userRouter = express.Router();
-const {Host,Conf}= require("../models/mongodbconfig.js")
+const {User,Conf}= require("../models/mongodbconfig.js")
 const rateLimit = require("express-rate-limit");
 
 
@@ -14,10 +14,10 @@ userRouter.use(userLimiter);
 
 userRouter.post("/post-confession",async(req,res)=>{
     const hostEmail = req.body.email;
-    const exist = await Host.findOne({host:hostEmail})
+    const exist = await User.findOne({host:hostEmail})
     if(!exist){
         res.status(404).json({ msg: "Host doesnt exist" });
-    }else{
+    }if(exist.isHosted == true){
       const confession = req.body.confession;
       const user = new Conf({
         host:hostEmail,
@@ -25,6 +25,8 @@ userRouter.post("/post-confession",async(req,res)=>{
       });
       await user.save();
       res.status(201).json({ msg: "Created" });
+    }else{
+      res.status(404).json({ msg: "confession doesnt exist" });
     }
     
 
