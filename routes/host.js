@@ -16,7 +16,7 @@ hostRouter.post("/new-user",async(req,res)=>{
  const email = req.body.email;
 const exist = await User.findOne({host:email})
 if(exist){
-  res.status(404).json({ msg: "User already exist" });
+  return res.status(404).json({ msg: "User already exist" });
 }else{
   const payload = req.body;
 const token = jwt.sign(payload,jwtPassword)
@@ -35,7 +35,7 @@ hostRouter.get("/get-confessions",verifyToken,async(req,res)=>{
     const user = await User.findOne({host:hostEmail})
     const isHosted = user.isHosted;
     if(isHosted!=true){
-        res.status(404).json({ msg: "confession doesnt exist" });
+        return res.status(404).json({ msg: "confession doesnt exist" });
     }else{
       const confessions = await Conf.find({host:hostEmail}).select("confession")
       res.json({confessions})
@@ -47,7 +47,7 @@ hostRouter.post("/init",verifyToken,async(req,res)=>{
     const user = await User.findOne({host:hostEmail})
     const isHosted = user.isHosted;
     if(isHosted){
-        res.status(404).json({ msg: "Confession already exists" });
+       return  res.status(404).json({ msg: "Confession already exists" });
     }else{
      user.isHosted = true;
       await user.save();

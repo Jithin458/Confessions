@@ -16,12 +16,13 @@ userRouter.post("/post-confession",async(req,res)=>{
     const hostEmail = req.body.email;
     const exist = await User.findOne({host:hostEmail})
     if(!exist){
-        res.status(404).json({ msg: "Host doesnt exist" });
+       return res.status(404).json({ msg: "Host doesnt exist" });
     }if(exist.isHosted == true){
       const confession = req.body.confession;
       const user = new Conf({
         host:hostEmail,
-        confession:confession
+        confession:confession,
+        expiresAt:exist.createdAt
       });
       await user.save();
       res.status(201).json({ msg: "Created" });

@@ -15,13 +15,10 @@ const userSchema = new mongoose.Schema({
 const confSchema = new mongoose.Schema({
     host:String,
     confession:String,
-     createdAt: {
-    type: Date,
-    default: Date.now,
-    expires: 86400
-  }
+    expiresAt:Date
+  
 })
-
+confSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 const Conf = mongoose.model("confessions",confSchema)
 const User = mongoose.model("users",userSchema)
 
