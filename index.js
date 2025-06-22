@@ -1,9 +1,16 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const hostRouter = require("./routes/host");
-const userRouter = require("./routes/users")
+const userRouter = require("./routes/users");
+const helmet = require("helmet");
 
 const app = express();
+
+app.use(helmet());
+app.use(express.json());
+app.use("/host",hostRouter);
+app.use("/user",userRouter);
+
 const connectDb = async()=>{
     try{
     mongoose.connect("connect-url", {
@@ -15,11 +22,6 @@ catch(err){
     console.log(err);
 }}
 connectDb();
-
-app.use(express.json());
-
-app.use("/host",hostRouter);
-app.use("/user",userRouter);
 
 
 app.listen(3000,()=>{
