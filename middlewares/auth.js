@@ -10,7 +10,7 @@ if(!token){
     res.status(401).json({msg:"No token provided"})
 }
 try{
-const decoded = jwt.verify(token,"secret");
+const decoded = jwt.verify(token,jwtSecret);
 req.hostEmail = decoded.email;
 next()
 }catch(err){
