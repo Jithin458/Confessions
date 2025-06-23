@@ -4,7 +4,9 @@ const hostRouter = express.Router();
 const {Conf,User}= require("../models/mongodbconfig.js")
 const verifyToken = require("../middlewares/auth.js");
 const rateLimit = require("express-rate-limit");
-const jwtPassword ="";
+require('dotenv').config();
+
+const jwtSecret = process.env.JWTSECRET;
 
 const hostLimiter = rateLimit({
   windowMs:10*60*1000,
@@ -19,7 +21,7 @@ if(exist){
   return res.status(404).json({ msg: "User already exist" });
 }else{
   const payload = req.body;
-const token = jwt.sign(payload,jwtPassword)
+const token = jwt.sign(payload,jwtSecret)
 
 const user = new User({
   host:email

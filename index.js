@@ -6,8 +6,11 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const fs = require("fs");
 const path = require("path");
+require ('dotenv').config;
 
 const app = express();
+const port = process.env.PORT || 3000;
+const connectUrl = process.env.CONNECTURL;
 const logStream = fs.createWriteStream(path.join(__dirname,'access.log'),{flags:'a'});
 
 app.use(helmet());
@@ -29,6 +32,6 @@ catch(err){
 connectDb();
 
 
-app.listen(3000,()=>{
+app.listen(port,()=>{
     console.log("server is running...")
 })
