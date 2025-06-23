@@ -21,7 +21,7 @@ app.use("/user",userRouter);
 
 const connectDb = async()=>{
     try{
-    mongoose.connect("connect-url", {
+    mongoose.connect(connectUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

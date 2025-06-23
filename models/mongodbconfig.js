@@ -5,6 +5,12 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
     host:String,
     jwt:String,
+
+
+})
+const hostSchema = new mongoose.Schema({
+    host:String,
+    jwt:String,
     isHosted:Boolean,
      createdAt: {
     type: Date,
@@ -21,5 +27,5 @@ const confSchema = new mongoose.Schema({
 confSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 const Conf = mongoose.model("confessions",confSchema)
 const User = mongoose.model("users",userSchema)
-
-module.exports= {Conf,User};
+const Host = mongoose.model("host",userSchema)
+module.exports= {Conf,User,Host};
