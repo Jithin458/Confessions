@@ -18,8 +18,8 @@ hostRouter.use(hostLimiter);
 
 hostRouter.get("/get-confessions",verifyToken,async(req,res,next)=>{
   try {
-    const hostEmail = req.hostEmail;
-    const user = await Host.findOne({email:hostEmail})
+    const userId = req.body.userId
+    const user = await Host.findOne({userId:userId})
     const isHosted = user.isHosted;
     if(isHosted!=true){
       const err = new Error("Confession doesnt exist");
@@ -27,7 +27,7 @@ hostRouter.get("/get-confessions",verifyToken,async(req,res,next)=>{
       err.status = fail;
       next(err);
     }else{
-      const confessions = await Conf.find({email:hostEmail}).select("confession")
+      const confessions = await Conf.find({userId:userId}).select("confession")
       res.json({confessions})
     }
   }catch(err){
@@ -37,17 +37,19 @@ hostRouter.get("/get-confessions",verifyToken,async(req,res,next)=>{
 
 hostRouter.post("/init",verifyToken,async(req,res,next)=>{
   try {
-    const hostEmail = req.hostEmail;
-    const host = await Host.findOne({email:hostEmail})
-    const isHosted = host.isHosted;
-    if(isHosted){
+    const userId = req.body.userId
+    const user = await Host.findOne({userId:userId})
+    if(user){
       const err = new Error("Confession already exists");
       err.statusCode = 409;
       err.status = fail;
       next(err);
     }else{
-     host.isHosted = true;
-      await host.save();
+      const user = new User({
+        userId:userId
+
+      })
+      await user.save();
       res.status(201).json({ msg: "Created" });
     }
   }catch(err){

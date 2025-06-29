@@ -11,10 +11,10 @@ const userLimiter = rateLimit({
 })
 userRouter.use(userLimiter);
 
-userRouter.get("/user",async(req,res,next)=>{
+userRouter.get("/user/:userId",async(req,res,next)=>{
   try{
-    const hostEmail = req.body.email;
-    const host= await Host.findOne({host:hostEmail})
+    const userId = req.params.userId;
+    const host= await Host.findOne({userId:userId})
     if(!host){
       const err = new Error("Host doesnt exist");
       err.statusCode = 404;
@@ -32,10 +32,10 @@ userRouter.get("/user",async(req,res,next)=>{
   }
 })
 
-userRouter.post("/post-confession",async(req,res,next)=>{
+userRouter.post("/post-confession/:userId",async(req,res,next)=>{
   try{
-    const hostEmail = req.body.email;
-    const exist = await Host.findOne({host:hostEmail})
+    const userId = req.params.userId;
+    const host= await Host.findOne({userId:userId})
     if(!exist){
       const err = new Error("Host doesnt exist");
       err.statusCode = 404;
@@ -44,7 +44,7 @@ userRouter.post("/post-confession",async(req,res,next)=>{
     }if(exist.isHosted == true){
       const confession = req.body.confession;
       const user = new Conf({
-        host:hostEmail,
+        userId:userId,
         confession:confession,
         expiresAt:exist.createdAt
       });

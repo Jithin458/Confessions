@@ -10,9 +10,7 @@ const userSchema = new mongoose.Schema({
 
 })
 const hostSchema = new mongoose.Schema({
-    host:String,
-    jwt:String,
-    isHosted:Boolean,
+    userId:String,
      createdAt: {
     type: Date,
     default: Date.now,
@@ -20,7 +18,7 @@ const hostSchema = new mongoose.Schema({
   }
 })
 const confSchema = new mongoose.Schema({
-    host:String,
+    userId:String,
     confession:String,
     expiresAt:Date
   

@@ -2,8 +2,8 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const express = require("express");
 const signupRouter = express.Router();
-const User = require("./models/User");
-const jwt = require("jwt");
+const {User} = require("../models/mongodbconfig");
+const jwt = require("jsonwebtoken");
 
 const jwtSecret = process.env.JWTSECRET;
 
@@ -24,7 +24,7 @@ signupRouter.post("/",async(req,res,next)=>{
             password:hashedPassword
         });
         await user.save();
-        const token = jwt.sign({userId:user_.id,userEmail:user.email},jwtSecret)
+        const token = jwt.sign({userId:user._id,userEmail:user.email},jwtSecret)
          res.status(201).json({
       message: "User registered successfully",
       token,
@@ -32,7 +32,7 @@ signupRouter.post("/",async(req,res,next)=>{
         id: user._id,
         email: user.email
       }
-    });;
+    });
     }catch(err){
         next(err);
     }
