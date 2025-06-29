@@ -11,7 +11,7 @@ const userLimiter = rateLimit({
 })
 userRouter.use(userLimiter);
 
-userRouter.get("/:user",async(req,res,next)=>{
+userRouter.get("/user",async(req,res,next)=>{
   try{
     const hostEmail = req.body.email;
     const host= await Host.findOne({host:hostEmail})

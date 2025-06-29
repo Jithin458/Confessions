@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const hostRouter = require("./routes/host");
 const userRouter = require("./routes/users");
+const signupRouter = require("./routes/signup");
 const errorHandler = require("./middlewares/errorHandler");
 const helmet = require("helmet");
 const morgan = require("morgan");
@@ -31,6 +32,8 @@ app.use(morgan(':method :url :date[web]',{stream:logStream}));
 app.use(express.json());
 app.use("/host",hostRouter);
 app.use("/user",userRouter);
+app.use("/signup",signupRouter);
+
 app.use(errorHandler());
 
 

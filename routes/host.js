@@ -14,37 +14,12 @@ const hostLimiter = rateLimit({
 })
 hostRouter.use(hostLimiter);
 
-hostRouter.post("/new-user",async(req,res,next)=>{
-  try{
- const email = req.body.email;
-const exist = await User.findOne({host:email})
-if(exist){
-    const err = new Error("User already exists");
-      err.statusCode = 409;
-      err.status = fail;
-      next(err);
-  
-}else{
-  const payload = req.body;
-const token = jwt.sign(payload,jwtSecret)
 
-const user = new User({
-  host:email,
-  jwt:token,
-  isHosted:false
-})
-await user.save();
-res.json({token});
-}
-  }catch(err){
-    next(err);
-  }
-});
 
 hostRouter.get("/get-confessions",verifyToken,async(req,res,next)=>{
   try {
     const hostEmail = req.hostEmail;
-    const user = await Host.findOne({host:hostEmail})
+    const user = await Host.findOne({email:hostEmail})
     const isHosted = user.isHosted;
     if(isHosted!=true){
       const err = new Error("Confession doesnt exist");
@@ -52,7 +27,7 @@ hostRouter.get("/get-confessions",verifyToken,async(req,res,next)=>{
       err.status = fail;
       next(err);
     }else{
-      const confessions = await Conf.find({host:hostEmail}).select("confession")
+      const confessions = await Conf.find({email:hostEmail}).select("confession")
       res.json({confessions})
     }
   }catch(err){
@@ -63,7 +38,7 @@ hostRouter.get("/get-confessions",verifyToken,async(req,res,next)=>{
 hostRouter.post("/init",verifyToken,async(req,res,next)=>{
   try {
     const hostEmail = req.hostEmail;
-    const host = await Host.findOne({host:hostEmail})
+    const host = await Host.findOne({email:hostEmail})
     const isHosted = host.isHosted;
     if(isHosted){
       const err = new Error("Confession already exists");
