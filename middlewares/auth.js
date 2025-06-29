@@ -11,7 +11,7 @@ if(!token){
 }
 try{
 const decoded = jwt.verify(token,jwtSecret);
-req.hostEmail = decoded.email;
+req.user = decoded
 next()
 }catch(err){
     console.log(err);

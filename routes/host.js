@@ -18,7 +18,7 @@ hostRouter.use(hostLimiter);
 
 hostRouter.get("/get-confessions",verifyToken,async(req,res,next)=>{
   try {
-    const userId = req.body.userId
+    const userId = req.user.userId
     const user = await Host.findOne({userId:userId})
     const isHosted = user.isHosted;
     if(isHosted!=true){
@@ -37,7 +37,7 @@ hostRouter.get("/get-confessions",verifyToken,async(req,res,next)=>{
 
 hostRouter.post("/init",verifyToken,async(req,res,next)=>{
   try {
-    const userId = req.body.userId
+    const userId = req.user.userId
     const user = await Host.findOne({userId:userId})
     if(user){
       const err = new Error("Confession already exists");

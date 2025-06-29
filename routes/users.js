@@ -46,7 +46,7 @@ userRouter.post("/post-confession/:userId",async(req,res,next)=>{
       const user = new Conf({
         userId:userId,
         confession:confession,
-        expiresAt:exist.createdAt
+        expiresAt:host.createdAt
       });
       await user.save();
       res.status(201).json({ msg: "Created" });
