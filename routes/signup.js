@@ -14,7 +14,7 @@ signupRouter.post("/",async(req,res,next)=>{
         if(exist){
              const err = new Error("User already exists");
              err.statusCode = 409;
-             err.status = fail;
+             err.status = "fail";
              next(err);
         }
         const hashedPassword = await bcrypt.hash(password, 10);

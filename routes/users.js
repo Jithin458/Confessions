@@ -18,7 +18,7 @@ userRouter.get("/user/:userId",async(req,res,next)=>{
     if(!host){
       const err = new Error("Host doesnt exist");
       err.statusCode = 404;
-      err.status = fail;
+      err.status = "fail";
       next(err);
     }else{
       res.status(200).json({
@@ -36,12 +36,12 @@ userRouter.post("/post-confession/:userId",async(req,res,next)=>{
   try{
     const userId = req.params.userId;
     const host= await Host.findOne({userId:userId})
-    if(!exist){
-      const err = new Error("Host doesnt exist");
+    if(!host){
+      const err = new Error("Confession doesnt exist");
       err.statusCode = 404;
-      err.status = fail;
+      err.status = "fail";
       next(err);
-    }if(exist.isHosted == true){
+    }else{
       const confession = req.body.confession;
       const user = new Conf({
         userId:userId,
@@ -50,12 +50,6 @@ userRouter.post("/post-confession/:userId",async(req,res,next)=>{
       });
       await user.save();
       res.status(201).json({ msg: "Created" });
-    }else{
-      const err = new Error("Confession doesnt exists");
-      err.statusCode = 404;
-      err.status = fail;
-      next(err);
-     
     }
   }catch(err){
     next(err);

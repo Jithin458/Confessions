@@ -26,5 +26,5 @@ const confSchema = new mongoose.Schema({
 confSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 const Conf = mongoose.model("confessions",confSchema)
 const User = mongoose.model("users",userSchema)
-const Host = mongoose.model("host",userSchema)
+const Host = mongoose.model("host",hostSchema)
 module.exports= {Conf,User,Host};

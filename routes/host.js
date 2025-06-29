@@ -24,7 +24,7 @@ hostRouter.get("/get-confessions",verifyToken,async(req,res,next)=>{
     if(isHosted!=true){
       const err = new Error("Confession doesnt exist");
       err.statusCode = 404;
-      err.status = fail;
+      err.status = "fail";
       next(err);
     }else{
       const confessions = await Conf.find({userId:userId}).select("confession")
@@ -42,10 +42,10 @@ hostRouter.post("/init",verifyToken,async(req,res,next)=>{
     if(user){
       const err = new Error("Confession already exists");
       err.statusCode = 409;
-      err.status = fail;
+      err.status = "fail";
       next(err);
     }else{
-      const user = new User({
+      const user = new Host({
         userId:userId
 
       })
