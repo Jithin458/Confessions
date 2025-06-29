@@ -11,6 +11,26 @@ const userLimiter = rateLimit({
 })
 userRouter.use(userLimiter);
 
+userRouter.get("/:user",async(req,res,next)=>{
+  try{
+    const hostEmail = req.body.email;
+    const host= await Host.findOne({host:hostEmail})
+    if(!host){
+      const err = new Error("Host doesnt exist");
+      err.statusCode = 404;
+      err.status = fail;
+      next(err);
+    }else{
+      res.status(200).json({
+        message:"host exist ",
+        status:"success"
+
+      })
+    }
+  }catch(err){
+    next(err);
+  }
+})
 
 userRouter.post("/post-confession",async(req,res,next)=>{
   try{
